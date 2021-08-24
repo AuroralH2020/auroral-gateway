@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-  
+
 	<groupId>eu.bavenir</groupId>
 	<artifactId>OpenGatewayAPI</artifactId>
 	<version>0.8</version>
@@ -11,7 +11,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		
+
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -22,36 +22,47 @@
 			<name>Public online Restlet repository</name>
 			<url>http://maven.restlet.com</url>
 		</repository>
-		
+
 		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
-		
+
 	</repositories>
 
 	<dependencies>
 
 		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.5.6</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
 		</dependency>
-			
+
 		<dependency>
-		    <groupId>com.github.jsonld-java</groupId>
-		    <artifactId>jsonld-java</artifactId>
-		    <version>0.12.4</version>
+			<groupId>com.github.jsonld-java</groupId>
+			<artifactId>jsonld-java</artifactId>
+			<version>0.12.4</version>
 		</dependency>
-		
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.2.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mock-server</groupId>
+			<artifactId>mockserver-netty</artifactId>
+			<version>5.11.1</version>
+		</dependency>
+
 		<!-- RESTLET -->
 		<dependency>
 			<groupId>org.restlet.jse</groupId>
@@ -63,7 +74,7 @@
 			<artifactId>org.restlet.ext.json</artifactId>
 			<version>2.3.9</version>
 		</dependency>
-		
+
 		<!-- JWT -->
 		<dependency>
 			<groupId>com.auth0</groupId>
@@ -87,7 +98,7 @@
 			<artifactId>javax.json</artifactId>
 			<version>1.0.4</version>
 		</dependency>
-		
+
 		<!-- SMACK -->
 		<dependency>
 			<groupId>org.igniterealtime.smack</groupId>
@@ -129,7 +140,7 @@
 			<artifactId>smack-debug</artifactId>
 			<version>4.3.0</version>
 		</dependency>
-		
+
 		<!-- Apache Commons Configuration -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -139,16 +150,16 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
+			<version>1.9.4</version>
 		</dependency>
-		
+
 		<!-- Andrea Cimmino's JClient -->
 		<dependency>
 			<groupId>com.github.vicinityh2020</groupId>
 			<artifactId>vicinity-open-gateway-api-distributed-query-client</artifactId>
 			<version>76f9dac9d7ca86d3219feb7c634fa653023d9f1e</version>
 		</dependency>
-	
+
 	</dependencies>
 	<!-- Build an executable JAR -->
 	<build>
@@ -168,7 +179,7 @@
 					</execution>
 				</executions>
 			</plugin>
-		
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -188,7 +199,7 @@
 						<filter>
 							<artifact>*:*</artifact>
 							<excludes>
-							<!-- Some jars are signed but shading breaks that. Don't include signing files. -->
+								<!-- Some jars are signed but shading breaks that. Don't include signing files. -->
 								<exclude>META-INF/*.SF</exclude>
 								<exclude>META-INF/*.DSA</exclude>
 								<exclude>META-INF/*.RSA</exclude>
@@ -208,11 +219,53 @@
 
 			<!-- Sonarqube Plugin -->
 			<plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.7.0.1746</version>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.7.0.1746</version>
 			</plugin>
-			
+
+			<!-- JACOCO Test reports & coverage-->
+			<!-- Plugin deprecated, look for alternative -->
+			<!-- <plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>PACKAGE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATION</value>
+											<minimum>0.50</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin> -->
+
 		</plugins>
 
 	</build>
