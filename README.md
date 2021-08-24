@@ -9,9 +9,14 @@ https://vicinity-get-started.readthedocs.io/en/latest/getstarted.html
 For more information about HTTP REST requests please visit complete REST API description.
 https://vicinityh2020.github.io/vicinity-gateway-api/#/
 
+<<<<<<< HEAD
+# VICINITY Gateway API issues #
+For the VICINITY Gateway API issues please follow: https://github.com/vicinityh2020/issue-tracking/issues?q=is%3Aissue+is%3Aclosed 
+=======
 # Build binaries #
 
 mvn clean package
+>>>>>>> 909b8edcf106062f0b62fe2e53c89936a521d060
 
 # Run static analyzer
 
