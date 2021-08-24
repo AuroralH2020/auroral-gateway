@@ -25,11 +25,14 @@ done
 
 echo Build and push image ${IMAGE_NAME} with tag ${ENV}
 
+# Build binaries
+mvn clean package
+
 # Do login
 docker login ${REGISTRY}
 
 # Build depending on env
-docker build --build-arg MY_ENV=develop --build-arg UID=1001 --build-arg GID=1001 --tag ${IMAGE_NAME} -f Dockerfile .
+docker build --build-arg UID=1001 --build-arg GID=1001 --tag ${IMAGE_NAME} -f Dockerfile .
 
 # Tag the image
 docker image tag ${IMAGE_NAME} ${REGISTRY}/${IMAGE_NAME}:${ENV}

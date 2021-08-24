@@ -1,43 +1,46 @@
 # Base image
 FROM openjdk:8-slim-buster
+# FROM maven:3.5.4-jdk-8-slim
 
 # Variables
-ARG MY_ENV=master
 ARG UID=1001
 ARG GID=1001
-ENV MY_ENV=${MY_ENV}
 ENV UID=${UID}
 ENV GID=${GID}
 
 # Install BUSTER packages
 RUN apt-get update && apt-get install -y git
-    
+
 # Create group and user that will run the gateway
 RUN groupadd -r --gid ${GID} app && useradd -r --uid ${UID} --gid ${GID} -s /sbin/nologin --home /gateway app
 
-# Pull repository
-RUN git clone -b ${MY_ENV} https://github.com/vicinityh2020/vicinity-gateway-api.git
-
-# Move files to working dir
-RUN mkdir gateway \
-    && mkdir gateway/target \
-    && mkdir gateway/config \
-    && mkdir gateway/keystore \
-    && mv vicinity-gateway-api/target/ogwapi-jar-with-dependencies.jar /gateway/target/ \
-    && mv vicinity-gateway-api/config/* /gateway/config/ \
-    && mv vicinity-gateway-api/keystore/genkeys.sh /gateway/keystore/ \
-    && rm -rf vicinity-gateway-api
+# Create working directory
+RUN mkdir gateway
 WORKDIR /gateway
+
+# Copy sources
+COPY --chown=app:app pom.xml /gateway/
+# COPY --chown=app:app src/** /gateway/src/
+COPY --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/target/
+COPY --chown=app:app config/** /gateway/config/
+COPY --chown=app:app keystore/** /gateway/keystore/
+
+# Create directories
+RUN mkdir data \
+    && mkdir log
+
+# # Build sources
+# RUN mvn -q clean package
 
 # Change rights and user
 RUN chmod 764 ./target/ogwapi-jar-with-dependencies.jar \
-    && mkdir ./log/ \
     && chmod -R 777  ./log/ \
-    && mkdir ./data/ \
     && chmod -R 777  ./data/ \
     && chown -R app:app /gateway \
-    && chmod 764 ./config/GatewayConfig.xml \
+    && chmod -R 764 ./config \
     && chmod +x ./keystore/genkeys.sh
+
+# Use non-root user    
 USER app
 
 # Select port

@@ -58,16 +58,16 @@ elif [ ${MY_ENV} == "local" ]; then
         docker kill vcnt-gateway >/dev/null 2>&1
         docker rm vcnt-gateway >/dev/null 2>&1
         docker rmi vcnt-gateway >/dev/null 2>&1
-        docker build --build-arg MY_ENV=develop --build-arg UID=1001 --build-arg GID=1001 -t vcnt-gateway .
+        docker build --build-arg UID=1001 --build-arg GID=1001 -t auroral-gateway .
     fi
-    docker run -d -p 8181:8181 -v ${MY_PATH}/log:/gateway/log -it --rm --name vcnt-gateway vcnt-gateway:latest
+    docker run -d -p 8181:8181 -v ${MY_PATH}/log:/gateway/log -it --rm --name auroral-gateway auroral-gateway
 
 elif [ ${MY_ENV} == "test" ]; then
 
     docker run -v $(pwd)/config:/libs -p 1080:1080  mockserver/mockserver -serverPort 1080
     mvn test
 
-elif [ ${MY_ENV} == "test" ]; then
+elif [ ${MY_ENV} == "build" ]; then
 
     echo "Remember that tests use VICINITY base URI: /commserver/"
     docker run -v $(pwd)/config:/libs -p 1080:1080  mockserver/mockserver -serverPort 1080
