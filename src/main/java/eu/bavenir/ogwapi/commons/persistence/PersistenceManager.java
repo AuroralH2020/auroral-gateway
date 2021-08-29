@@ -9,29 +9,21 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.util.logging.Logger;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-
-import eu.bavenir.ogwapi.commons.connectors.NeighbourhoodManagerConnector;
+import eu.bavenir.ogwapi.commons.connectors.AgentConnector;
+import eu.bavenir.ogwapi.commons.messages.NetworkMessageResponse;
+import eu.bavenir.ogwapi.commons.connectors.http.RestAgentConnector;
 
 /*
  * STRUCTURE:
@@ -150,9 +142,9 @@ public class PersistenceManager {
 	private Logger logger;
 	
 	/**
-	 * NM connector.
+	 * The thing that communicates with an agent.
 	 */
-	private NeighbourhoodManagerConnector nmConnectionManager;
+	private AgentConnector agentConnector;
 	
 	
 	/* === PUBLIC METHODS === */
@@ -167,11 +159,10 @@ public class PersistenceManager {
 		persistenceFile = config.getString(CONFIG_PARAM_DATADIR, CONFIG_DEF_PERSISTENCEFILE) + PERSISTENCE_FILENAME;
 		thingDescriptionFile = config.getString(CONFIG_PARAM_DATADIR, CONFIG_DEF_PERSISTENCEFILE) + TD_FILENAME;
 		
-		// NM connector
-		nmConnectionManager = new NeighbourhoodManagerConnector(config, logger);
+		// TODO decide here what type of connector to use
+		agentConnector = new RestAgentConnector(config, logger);
 		
 		loadTDFromServer = config.getBoolean(CONFIG_PARAM_LOADTDFROMSERVER, CONFIG_DEF_LOADTDFROMSERVER);
-		
 		
 	}
 	
@@ -269,29 +260,13 @@ public class PersistenceManager {
 	 * 
 	 * @param objectId - specify object
 	 */
-	public JsonObject loadThingDescription(String objectId) {
+	public JsonObject loadThingDescription(String objectId, String body) {
 		
 		// First, try to load from server
 		JsonObject loadedTD;
 		
-		// for debug reason, it can be set in config file
-		if (loadTDFromServer) {
-			loadedTD = loadThingDescriptionFromServer(objectId);
-			if (loadedTD != null) {
-				
-				if (!loadedTD.getBoolean("error")) {
-					
-					saveThingDescription(objectId, loadedTD);
-					return loadedTD;
-				} else {
-					
-					logger.warning("TD json for " + objectId + " contains error message! Try to load TD from file.");
-				}	
-			}
-		}
+		loadedTD = loadThingDescriptionFromAgent(objectId, body);
 		
-		// Try to load from file
-		loadedTD = loadThingDescriptionFromFile(objectId);
 		if (loadedTD != null) {
 			
 			return loadedTD;
@@ -306,22 +281,26 @@ public class PersistenceManager {
 	 * 
 	 * @param objectId - specify object
 	 */
-	public JsonObject loadThingDescriptionFromServer(String objectId) {
-		Representation resp;
+	public JsonObject loadThingDescriptionFromAgent(String objectId, String body) {
+		NetworkMessageResponse resp;
+		String sourceOid = "GATEWAY";
+		String payload = body; 
+		Map<String, String> parameters = new HashMap<>();
 		String jsonStr;
 		
 		try {
-			resp = nmConnectionManager.getThingDescription(objectId);
+			
+			resp = agentConnector.discoveryObjectsTds(sourceOid, objectId, payload, parameters);
 			
 			// Get string from representation
-			jsonStr = resp.getText();
+			jsonStr = resp.getResponseBody();
 			
-			logger.info("TD json for " + objectId + " was loaded from server.");
+			logger.info("TD json for " + objectId + " was loaded from agent.");
 		 }
 		 catch (Exception e) {
 			e.printStackTrace();
 			
-			logger.warning("TD json for " + objectId + " could not be loaded from server.");
+			logger.warning("TD json for " + objectId + " could not be loaded from agent.");
 			
 			return null;
 		 };
@@ -345,95 +324,4 @@ public class PersistenceManager {
 		return json;
 	}
 	
-	/**
-	 * load object's thing description JSON from file
-	 * 
-	 * @param objectId - specify object
-	 */
-	public JsonObject loadThingDescriptionFromFile(String objectId) {
-		
-		// get the file name and create file object
-		String objectTDFileName = String.format(thingDescriptionFile, objectId);
-		File file = new File(objectTDFileName);
-		
-		// call method to load file
-		return loadThingDescriptionFromFile(file);
-	}
-	
-	/**
-	 * load object's thing description JSON from file
-	 * 
-	 * @param file - specify file
-	 */
-	public JsonObject loadThingDescriptionFromFile(File file) {
-		
-		// loaded data
-		JsonObject data;
-		
-		// if file exist then try to open file and load data
-        if(file.exists()) {
-        	
-        	try {
-    			
-        		InputStream is = new FileInputStream(file);
-                String jsonTxt = IOUtils.toString(is, "UTF-8");
-                is.close();
-                
-                JsonReader jsonReader = Json.createReader(new StringReader(jsonTxt));
-                
-                try {
-        			data = jsonReader.readObject();
-        		} catch (Exception e) {
-        			
-        			logger.severe("PersistanceManager#loadThingDescriptionFromFile: Exception during reading JSON object: " 
-        						+ e.getMessage());
-        			
-        			return null;
-        		} finally {
-        			jsonReader.close();
-        		}
-                
-    			logger.info("TD json was loaded from file - " + file.getName() );
-    			
-    	    } catch (IOException i) {
-    	    	
-    	    	logger.warning("TD json could not be loaded from file - " + file.getName() );
-    	    	i.printStackTrace();
-    	        return null;
-    	        
-    	    } 
-        	
-        	return data;
-        }
-		
-        logger.info("TD json not found!");
-		return null;
-	}
-	
-	/**
-	 * save object's thing description to file
-	 * 
-	 * @param objectId - specify object
-	 * @param data - data to save
-	 */
-	public void saveThingDescription(String objectId, JsonObject data) {
-		
-		// get the file name 
-		String objectTDFileName = String.format(thingDescriptionFile, objectId);
-		
-		// try to write data to file
-		try { 
-			
-			OutputStream os = new FileOutputStream(objectTDFileName);
-            os.write(data.toString().getBytes());
-            os.close();
-            
-			logger.fine("TD json for " + objectId + " is saved in " + objectTDFileName );
-			
-		} catch (IOException i) {
-			
-			logger.warning("TD json for " + objectId + " could not be written to file. " + objectTDFileName );
-			i.printStackTrace();
-		} 
-	}
 }

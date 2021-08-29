@@ -55,12 +55,12 @@ elif [ ${MY_ENV} == "local" ]; then
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
         # Clean docker old builds and build locally
-        docker kill vcnt-gateway >/dev/null 2>&1
-        docker rm vcnt-gateway >/dev/null 2>&1
-        docker rmi vcnt-gateway >/dev/null 2>&1
+        docker kill auroral-gateway >/dev/null 2>&1
+        docker rm auroral-gateway >/dev/null 2>&1
+        docker rmi auroral-gateway >/dev/null 2>&1
         docker build --build-arg UID=1001 --build-arg GID=1001 -t auroral-gateway .
     fi
-    docker run -d -p 8181:8181 -v ${MY_PATH}/log:/gateway/log -it --rm --name auroral-gateway auroral-gateway
+    docker run -p 8181:8181 -v ${MY_PATH}/log:/gateway/log -it --rm --name auroral-gateway auroral-gateway
 
 elif [ ${MY_ENV} == "test" ]; then
 

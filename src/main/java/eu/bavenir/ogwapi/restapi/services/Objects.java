@@ -61,11 +61,6 @@ public class Objects extends ServerResource {
 	private static final String ATTR_TDS = "thingDescriptions";
 	
 	/**
-	 * Name of the Thing description attribute.
-	 */
-	private static final String ATTR_TD = "thingDescription";
-	
-	/**
 	 * Name of the Pagen attribute.
 	 */
 	private static final String ATTR_PAGE = "page";
@@ -83,28 +78,7 @@ public class Objects extends ServerResource {
 	 */
 	@Get
 	public Representation represent() {
-		
-		Map<String, String> queryParams = getQuery().getValuesMap();
-		
-		boolean attrObjectsWithTDs = false;
-		
-		if (queryParams.get(ATTR_TDS) != null) {
-			attrObjectsWithTDs = Boolean.parseBoolean(queryParams.get(ATTR_TDS));
-		}
-		
-		int attrPage = 0;
-		
-		if (queryParams.get(ATTR_PAGE) != null) {
-			attrPage = Integer.parseInt(queryParams.get(ATTR_PAGE));
-		}
-		
-		if (attrObjectsWithTDs) {
-			return getObjectsTDs(attrPage);
-		} else {
 			return getObjects();	
-		}
-		
-		
 	}
 	
 	
@@ -136,19 +110,6 @@ public class Objects extends ServerResource {
 		mainObjectBuilder.add(ATTR_OBJECTS, mainArrayBuilder);
 
 		return new JsonRepresentation(mainObjectBuilder.build().toString());
-	}
-	
-	/**
-	 * Goes through the object's roster and creates a JSON TDs from the visible records.
-	 * 
-	 * 
-	 * @return JSON representation of the list. 
-	 */
-	private Representation getObjectsTDs(int pageNumber){
-		
-		CommunicationManager communicationManager = (CommunicationManager) getContext().getAttributes().get(Api.CONTEXT_COMMMANAGER);
-		
-		return communicationManager.getThingDescriptions(getRequest().getChallengeResponse().getIdentifier(), pageNumber);
 	}
 
 	/**

@@ -181,10 +181,12 @@ public class Api extends Application {
 		
 		
 		// DISCOVERY
-		router.attach("/objects", Objects.class);
-		router.attach("/objects/{oid}", ObjectsOid.class);
-		//get
-		router.attach("/agents/{agid}/objects", AgentsAgidObjects.class);
+		// get
+		router.attach("/objects", Objects.class); // Get all objects agent can see (only OIDs)
+		// post
+		router.attach("/objects/{oid}", ObjectsOid.class); // Send remote req for thing desc (Use this for discovery) (Re-route to fetch td from agent)
+		// get
+		router.attach("/agents/{agid}/objects", AgentsAgidObjects.class); // Get all object under agent (OIDs and TDs)
 		
 		
 		// REGISTRY

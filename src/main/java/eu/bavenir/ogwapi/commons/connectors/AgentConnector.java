@@ -163,6 +163,17 @@ public abstract class AgentConnector {
 	public abstract NetworkMessageResponse stopObjectAction(String sourceOid, String destinationOid, String actionId, 
 			String body, Map<String, String> parameters);
 	
+	/**
+	 * This method is executed when a discovery request is received.
+	 * 
+	 * @param sourceOid The object ID that issued the request.
+	 * @param destinationOid Destination object ID.
+	 * @param body Body of the request.
+	 * @param parameters Any parameters that were inserted into the request.
+	 * @return Response. See the main documentation for this class on how to create and fill the object.
+	 */
+	public abstract NetworkMessageResponse discoveryObjectsTds(String sourceOid, String destinationOid,
+	String body, Map<String, String> parameters);
 		
 	
 	/* === PRIVATE METHODS === */

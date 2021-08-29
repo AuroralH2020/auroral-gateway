@@ -367,7 +367,7 @@ public class NeighbourhoodManagerConnector {
 	 * Retrieves the thing descriptions of list IoT objects from the Neighborhood
 	 * Manager.
 	 * 
-	 * @param Representation of the incoming JSON. List of OIDs
+	 * @param OID of required object TD
 	 * @return Thing descriptions of objects specified in payload.
 	 */
 	public synchronized Representation getThingDescription(String objectId) {

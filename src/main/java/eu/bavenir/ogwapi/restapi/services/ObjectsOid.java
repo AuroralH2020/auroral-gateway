@@ -8,7 +8,7 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 
@@ -25,6 +25,7 @@ import eu.bavenir.ogwapi.restapi.Api;
 
 
 /**
+ * DISCOVERY
  * This class implements a {@link org.restlet.resource.ServerResource ServerResource} interface for following
  * Gateway API calls:
  * 
@@ -49,11 +50,14 @@ public class ObjectsOid extends ServerResource{
 	// === OVERRIDEN HTTP METHODS ===
 	
 	/**
-	 * Answers the GET call
+	 * Answers the POST call
+	 * 
+	 * @param entity Representation of the incoming JSON. Can contain SPARQL query for discovery
 	 * 
 	 * @return A {@link StatusMessage StatusMessage} 
+	 * 
 	 */
-	@Get
+	@Post
 	public Representation represent(Representation entity) {
 		
 		String attrOid = getAttribute(ATTR_OID);
@@ -69,7 +73,6 @@ public class ObjectsOid extends ServerResource{
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, 
 					"Given identifier does not exist.");
 		}
-		
 
 		String body = getRequestBody(entity, logger);
 		

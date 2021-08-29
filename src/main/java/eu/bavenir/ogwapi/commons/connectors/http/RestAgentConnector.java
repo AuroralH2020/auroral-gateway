@@ -26,7 +26,6 @@ import org.json.JSONObject;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.mashape.unirest.http.options.Options;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 
@@ -200,6 +199,11 @@ public class RestAgentConnector extends AgentConnector {
 	 * Name of the 'actions' attribute in the final URL.
 	 */
 	private static final String ATTR_URL_ACTIONS = "/actions";
+
+	/**
+	 * Name of the 'discovery' attribute in the final URL.
+	 */
+	private static final String ATTR_URL_DISCOVERY = "/discovery";
 
 	/**
 	 * Name of the 'dummy' attribute in the returned JSON.
@@ -417,9 +421,20 @@ public class RestAgentConnector extends AgentConnector {
 		return performOperation(OPERATION_DELETE, sourceOid, fullEndpointUrl, body, parameters);
 	}
 
+	/**
+	 * This will make a call to GET http://<agent IP>:<agent port>/agent/objects/<destination OID>/discovery
+	 */
+	@Override
+	public NetworkMessageResponse discoveryObjectsTds(String sourceOid, String destinationOid, String body, Map<String, String> parameters) {
 
+		logger.info("Building discovery message for agent...");
 
+		String fullEndpointUrl = new String(agentServiceUrl);
 
+		fullEndpointUrl = fullEndpointUrl + ATTR_URL_OBJECTS + "/" + destinationOid + ATTR_URL_DISCOVERY;
+
+		return performOperation(OPERATION_POST, sourceOid, fullEndpointUrl, body, parameters);
+	}
 
 
 	/* === PRIVATE METHODS === */

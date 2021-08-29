@@ -11,6 +11,7 @@ import javax.json.JsonObject;
 
 import org.apache.commons.configuration2.XMLConfiguration;
 import org.json.JSONException;
+import org.restlet.representation.Representation;
 
 import eu.bavenir.ogwapi.commons.Action;
 import eu.bavenir.ogwapi.commons.EventChannel;
@@ -133,7 +134,8 @@ public class Data implements Serializable {
 		}	
 		
 		// load TD JSON
-		this.thingDescription = persistenceManager.loadThingDescription(objectId);
+		this.thingDescription = null;
+		// this.thingDescription = persistenceManager.loadThingDescription(objectId);
 	}
 
 	/**
@@ -307,8 +309,8 @@ public class Data implements Serializable {
 	 * 
 	 * @return TD file in JsonObject format 
 	 */
-	public JsonObject getThingDescription() {
+	public JsonObject getThingDescription(String objectId, String body) {
 		
-		return thingDescription;
+		return persistenceManager.loadThingDescription(objectId, body);
 	}
 }
