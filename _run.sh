@@ -65,12 +65,10 @@ elif [ ${MY_ENV} == "local" ]; then
 elif [ ${MY_ENV} == "test" ]; then
 
     docker run -v $(pwd)/config:/libs -p 1080:1080  mockserver/mockserver -serverPort 1080
-    mvn test
 
 elif [ ${MY_ENV} == "build" ]; then
 
     echo "Remember that tests use VICINITY base URI: /commserver/"
-    docker run -v $(pwd)/config:/libs -p 1080:1080  mockserver/mockserver -serverPort 1080
     mvn clean package
 
 else 
