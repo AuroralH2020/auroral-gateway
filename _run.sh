@@ -61,6 +61,8 @@ elif [ ${MY_ENV} == "local" ]; then
         docker build --build-arg UID=1001 --build-arg GID=1001 -t auroral-gateway .
     fi
     docker run -p 8181:8181 -v ${MY_PATH}/log:/gateway/log -it --rm --name auroral-gateway auroral-gateway
+    # curl localhost:8181/api/objects/login -H 'Authorization: Basic dGVzdDE6dGVzdA=='
+    # curl localhost:8181/api/objects -H 'Authorization: Basic dGVzdDE6dGVzdA=='
 
 elif [ ${MY_ENV} == "test" ]; then
 
