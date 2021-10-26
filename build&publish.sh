@@ -8,7 +8,7 @@ USAGE="$(basename "$0") [ -h ] [ -e env ]
 # Default configuration
 ENV=dev
 REGISTRY=registry.bavenir.eu
-IMAGE_NAME=auroral-gateway
+IMAGE_NAME=auroral_gateway
 
 # Github configuration
 GIT_ENV=beta

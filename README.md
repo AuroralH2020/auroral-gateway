@@ -19,7 +19,7 @@ Refer to AURORAL Node repository for deployment
 
 Available for AMD64, ARM64 and ARM7 architectures.
 
-# Build binaries #
+### Build binaries ###
 
 mvn clean package
 
