@@ -26,6 +26,8 @@ import eu.bavenir.ogwapi.restapi.services.ObjectsOidEvents;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidEventsEid;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidProperties;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidPropertiesPid;
+import eu.bavenir.ogwapi.restapi.services.SecurityPrivacy;
+import eu.bavenir.ogwapi.restapi.services.SecurityRelationship;
 import eu.bavenir.ogwapi.restapi.services.SearchSemantic;
 import eu.bavenir.ogwapi.restapi.services.SearchSparql;
 import eu.bavenir.ogwapi.commons.CommunicationManager;
@@ -197,7 +199,12 @@ public class Api extends Application {
 		// post
 		router.attach("/agents/{agid}/objects/delete", AgentsAgidObjectsDelete.class);
 		
-		
+		// SECURITY
+		// get
+		router.attach("/security/privacy", SecurityPrivacy.class); // Get privacy of NODE objects
+		// get
+		router.attach("/security/relationship/{oid}", SecurityRelationship.class); // Get relationship between requester organisation and node organisation
+
 		// SEARCH
 		// sparql query (VCNT)
 		router.attach("/search/sparql", SearchSparql.class);

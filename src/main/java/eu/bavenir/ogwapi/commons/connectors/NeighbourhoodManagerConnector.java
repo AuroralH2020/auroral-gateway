@@ -124,6 +124,18 @@ public class NeighbourhoodManagerConnector {
 	private static final String TD_SERVICE = "items/td";
 
 	/**
+	 * Privacy - Get relationship
+	 */
+
+	 private static final String TD_SECURITY_RELATIONSHIP = "agent/relationship/";
+
+	/**
+	 * Privacy - Get privacy
+	 */
+
+	private static final String TD_SECURITY_PRIVACY = "agent/privacy";
+
+	/**
 	 * Send counters
 	 */
 	private static final String SEND_COUNTERS = "counters";
@@ -408,6 +420,37 @@ public class NeighbourhoodManagerConnector {
 				MediaType.APPLICATION_JSON);
 
 		return responseRepresentation;
+
+	}
+
+	/**
+	 * Retrieves the relationship between node origin and destination of the request
+	 * 
+	 * @param OID of node or object originating the request
+	 * @return String (enum: Me, Friend, Other)
+	 */
+	public synchronized Representation getRelationship(String objectId) {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_SECURITY_RELATIONSHIP + objectId;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves the privacy of all node items
+	 * 
+	 * @return Array [{ oid: String, privacy: Number }]
+	 */
+	public synchronized Representation getPrivacy() {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_SECURITY_PRIVACY;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
 
 	}
 

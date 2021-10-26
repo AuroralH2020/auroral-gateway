@@ -1476,7 +1476,32 @@ public class CommunicationManager {
 		
 		return nmConnector.deleteObjects(json);
 	}
+
+	/**
+	 * Security - Gets relationship between origin and destination node.
+	 * 
+	 * @param oid String ID of the node originating the request
+	 * @return Notification of success or failure.
+	 */
+	public Representation getRelationship(String oid){
+		if (oid == null) {
+			
+			logger.warning("Error when getting relationship. OID is null.");
+			
+			return null;
+		}
+		
+		return nmConnector.getRelationship(oid);
+	}
 	
+	/**
+	 * Security - Gets privacy of node items.
+	 * 
+	 * @return Array [{ oid: String, privacy: Number }]
+	 */
+	public Representation getPrivacy(){
+		return nmConnector.getPrivacy();
+	}
 	
 	/**
 	 * getThingDescriptions - Return one page of the thing descriptions of IoT object(s).

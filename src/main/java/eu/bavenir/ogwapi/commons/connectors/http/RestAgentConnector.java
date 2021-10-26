@@ -558,6 +558,7 @@ public class RestAgentConnector extends AgentConnector {
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Accept", "application/json");
 		headers.put("Content-Type", "application/json");
+		headers.put("sourceoid", sourceOid);
 
 		JSONObject jsonBody = null;
 		if (body != null && !body.isEmpty()) {
