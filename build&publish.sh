@@ -33,6 +33,9 @@ echo Build and push image ${IMAGE_NAME} with tag ${ENV}
 # Do login
 docker login ${REGISTRY}
 
+# Build Sources
+mvn clean package
+
 # Multiarch builder
 docker buildx use multiplatform
 

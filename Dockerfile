@@ -2,6 +2,11 @@
 FROM openjdk:8-slim-buster
 # FROM maven:3.5.4-jdk-8-slim
 
+LABEL version="1.0"
+LABEL maintaner="jorge.almela@bavenir.eu"
+LABEL release-date="26-10-2021"
+LABEL org.opencontainers.image.source https://github.com/AuroralH2020/auroral-gateway
+
 # Variables
 ARG UID=1001
 ARG GID=1001
