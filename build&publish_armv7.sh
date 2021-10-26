@@ -1,0 +1,42 @@
+#!/bin/bash
+USAGE="$(basename "$0") [ -h ] [ -e env ]
+-- Build and publish image to docker registry
+-- Flags:
+      -h  shows help
+      -e  environment [ dev (default), prod, ... ]"
+
+# Default configuration
+ENV=armv7
+REGISTRY=registry.bavenir.eu
+IMAGE_NAME=auroral_gateway
+
+# Get configuration
+while getopts 'hd:e:' OPTION; do
+case "$OPTION" in
+    h)
+    echo "$USAGE"
+    exit 0
+    ;;
+    e)
+    ENV="$OPTARG"
+    ;;
+esac
+done
+
+echo Build and push image ${IMAGE_NAME} with tag ${ENV}
+
+# Build binaries
+# mvn clean package
+
+# Do login
+docker login ${REGISTRY}
+
+# Build depending on env
+docker buildx use multiplatform
+docker buildx build --platform linux/arm/v7 --build-arg UID=1001 --build-arg GID=1001 --tag ${REGISTRY}/${IMAGE_NAME}:${ENV} -f Dockerfile.armv7 --push .
+
+# # Tag the image
+# docker image tag ${IMAGE_NAME} ${REGISTRY}/${IMAGE_NAME}:${ENV}
+
+# # Push image
+# docker push ${REGISTRY}/${IMAGE_NAME}:${ENV}
