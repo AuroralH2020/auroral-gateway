@@ -260,12 +260,12 @@ public class PersistenceManager {
 	 * 
 	 * @param objectId - specify object
 	 */
-	public JsonObject loadThingDescription(String objectId, String body) {
+	public JsonObject loadThingDescription(String sourceId, String objectId, String body) {
 		
 		// First, try to load from server
 		JsonObject loadedTD;
 		
-		loadedTD = loadThingDescriptionFromAgent(objectId, body);
+		loadedTD = loadThingDescriptionFromAgent(sourceId, objectId, body);
 		
 		if (loadedTD != null) {
 			
@@ -281,9 +281,9 @@ public class PersistenceManager {
 	 * 
 	 * @param objectId - specify object
 	 */
-	public JsonObject loadThingDescriptionFromAgent(String objectId, String body) {
+	public JsonObject loadThingDescriptionFromAgent(String sourceId, String objectId, String body) {
 		NetworkMessageResponse resp;
-		String sourceOid = "GATEWAY";
+		String sourceOid = sourceId;
 		String payload = body; 
 		Map<String, String> parameters = new HashMap<>();
 		String jsonStr;

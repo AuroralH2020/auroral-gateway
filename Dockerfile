@@ -13,8 +13,8 @@ ARG GID=1001
 ENV UID=${UID}
 ENV GID=${GID}
 
-# Install BUSTER packages
-RUN apt-get update && apt-get install -y git
+# # Install BUSTER packages
+# RUN apt-get update && apt-get install -y git
 
 # Create group and user that will run the gateway
 RUN groupadd -r --gid ${GID} app && useradd -r --uid ${UID} --gid ${GID} -s /sbin/nologin --home /gateway app

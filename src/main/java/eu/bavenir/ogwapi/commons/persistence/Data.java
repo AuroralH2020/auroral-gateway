@@ -309,8 +309,8 @@ public class Data implements Serializable {
 	 * 
 	 * @return TD file in JsonObject format 
 	 */
-	public JsonObject getThingDescription(String objectId, String body) {
+	public JsonObject getThingDescription(String sourceId, String objectId, String body) {
 		
-		return persistenceManager.loadThingDescription(objectId, body);
+		return persistenceManager.loadThingDescription(sourceId, objectId, body);
 	}
 }

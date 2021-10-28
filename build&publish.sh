@@ -40,12 +40,12 @@ mvn clean package
 docker buildx use multiplatform
 
 # Build for AMD64/ARM64 & push to private registry
-docker buildx build --platform linux/amd64,linux/arm64 --build-arg UID=1001 --build-arg GID=1001 --tag ${REGISTRY}/${IMAGE_NAME}:${ENV} -f Dockerfile .
-docker push ${REGISTRY}/${IMAGE_NAME}:${ENV}
+docker buildx build --platform linux/amd64,linux/arm64 --build-arg UID=1001 --build-arg GID=1001 --tag ${REGISTRY}/${IMAGE_NAME}:${ENV} -f Dockerfile . --push
+docker pull ${REGISTRY}/${IMAGE_NAME}:${ENV}
 
 # Build for ARMv7 & push to private registry
-docker buildx build --platform linux/arm/v7 --build-arg UID=1001 --build-arg GID=1001 --tag ${REGISTRY}/${IMAGE_NAME}:armv7 -f Dockerfile.armv7 .
-docker push ${REGISTRY}/${IMAGE_NAME}:armv7
+docker buildx build --platform linux/arm/v7 --build-arg UID=1001 --build-arg GID=1001 --tag ${IMAGE_NAME}_armv7 -f Dockerfile.armv7 . --push
+docker pull ${REGISTRY}/${IMAGE_NAME}:armv7
 
 # Push to GitHub
 docker login ${GIT_REGISTRY}

@@ -1479,7 +1479,7 @@ public class ConnectionDescriptor {
 	 * @return Response to be sent back.
 	 */
 	private NetworkMessageResponse respondToGetObjectThingDescription(NetworkMessageRequest requestMessage) {
-		JsonObject thingDescription = data.getThingDescription(requestMessage.getDestinationOid(), requestMessage.getRequestBody());
+		JsonObject thingDescription = data.getThingDescription(requestMessage.getSourceOid(), requestMessage.getDestinationOid(), requestMessage.getRequestBody());
 		
 		NetworkMessageResponse response = new NetworkMessageResponse(config, logger);
 		if (thingDescription != null) {
