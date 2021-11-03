@@ -25,23 +25,14 @@ import eu.bavenir.ogwapi.restapi.Api;
  * This class implements a {@link org.restlet.resource.ServerResource ServerResource} interface for following
  * Gateway API calls:
  * 
- *   URL: 				[server]:[port]/api/security/relationship/{oid}
+ *   URL: 				[server]:[port]/api/agents/partners
  *   METHODS: 			GET
  *   SPECIFICATION:		@see <a href="https://vicinityh2020.github.io/vicinity-gateway-api/#/">Gateway API</a>
- *   ATTRIBUTES:		oid/agid - AURORAL Identifier of the Agent or Item 
- *   					(e.g. 1dae4326-44ae-4b98-bb75-15aa82516cc3).
  *   
  * @author jorge
  *
  */
-public class SecurityRelationship extends ServerResource {
-	
-	// === CONSTANTS ===
-	
-	/**
-	 * Name of the Agent ID attribute.
-	 */
-	private static final String ATTR_OID = "oid";
+public class DiscoveryPartners extends ServerResource {
 	
 	// === OVERRIDEN HTTP METHODS ===
 	
@@ -56,16 +47,7 @@ public class SecurityRelationship extends ServerResource {
 		Logger logger = (Logger) getContext().getAttributes().get(Api.CONTEXT_LOGGER);
 		XMLConfiguration config = (XMLConfiguration) getContext().getAttributes().get(Api.CONTEXT_CONFIG);
 		
-		
-		String attrOid = getAttribute(ATTR_OID);
-		
-		if (ATTR_OID == null){
-			logger.info("OID: " + attrOid + " Invalid ID.");
-			throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND, 
-					"Invalid ID.");
-		}
-		
-		return getRelationship(attrOid, logger, config);
+		return getPartners(logger, config);
 	}
 	
 	// === PRIVATE METHODS ===
@@ -78,12 +60,12 @@ public class SecurityRelationship extends ServerResource {
 	 * 
 	 * @return All VICINITY identifiers of objects registered under specified agent.
 	 */
-	private Representation getRelationship(String oid, Logger logger, XMLConfiguration config){
+	private Representation getPartners(Logger logger, XMLConfiguration config){
 		
 		CommunicationManager communicationManager 
 			= (CommunicationManager) getContext().getAttributes().get(Api.CONTEXT_COMMMANAGER);
 
-		return communicationManager.getRelationship(oid);
+		return communicationManager.getPartners();
 	
 	}
 }

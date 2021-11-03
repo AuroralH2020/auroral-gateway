@@ -27,7 +27,9 @@ import eu.bavenir.ogwapi.restapi.services.ObjectsOidEventsEid;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidProperties;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidPropertiesPid;
 import eu.bavenir.ogwapi.restapi.services.SecurityPrivacy;
-import eu.bavenir.ogwapi.restapi.services.SecurityRelationship;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryPartners;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryPartnersCid;
+import eu.bavenir.ogwapi.restapi.services.ObjectsCid;
 import eu.bavenir.ogwapi.restapi.services.SearchSemantic;
 import eu.bavenir.ogwapi.restapi.services.SearchSparql;
 import eu.bavenir.ogwapi.commons.CommunicationManager;
@@ -189,8 +191,14 @@ public class Api extends Application {
 		router.attach("/objects/{oid}", ObjectsOid.class); // Send remote req for thing desc (Use this for discovery) (Re-route to fetch td from agent)
 		// get
 		router.attach("/agents/{agid}/objects", AgentsAgidObjects.class); // Get all object under agent (OIDs and TDs)
-		
-		
+		// get 
+		router.attach("/agents/cid/{reqid}", ObjectsCid.class); // Get organisation ID of a given infrastructure item (devices, service, node)
+		// get
+		router.attach("/agents/partners", DiscoveryPartners.class); // Get all my organisation partners
+		// get
+		router.attach("/agents/partner/{cid}", DiscoveryPartnersCid.class); // Get information about a partner organisation
+
+
 		// REGISTRY
 		// post, put
 		router.attach("/agents/{agid}/objects", AgentsAgidObjects.class);
@@ -202,8 +210,6 @@ public class Api extends Application {
 		// SECURITY
 		// get
 		router.attach("/security/privacy", SecurityPrivacy.class); // Get privacy of NODE objects
-		// get
-		router.attach("/security/relationship/{oid}", SecurityRelationship.class); // Get relationship between requester organisation and node organisation
 
 		// SEARCH
 		// sparql query (VCNT)

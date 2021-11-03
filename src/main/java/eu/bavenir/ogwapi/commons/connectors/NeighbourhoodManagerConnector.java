@@ -124,10 +124,22 @@ public class NeighbourhoodManagerConnector {
 	private static final String TD_SERVICE = "items/td";
 
 	/**
-	 * Privacy - Get relationship
+	 * Discovery - Get cid
 	 */
 
-	 private static final String TD_SECURITY_RELATIONSHIP = "agent/relationship/";
+	 private static final String TD_DISCOVERY_CID = "agent/cid/";
+
+	/**
+	 * Discovery - Get partners
+	 */
+
+	private static final String TD_DISCOVERY_PARTNERS = "agent/partners";
+
+	/**
+	 * Discovery - Get partner info
+	 */
+
+	private static final String TD_DISCOVERY_PARTNER_INFO = "agent/partner/";
 
 	/**
 	 * Privacy - Get privacy
@@ -424,14 +436,45 @@ public class NeighbourhoodManagerConnector {
 	}
 
 	/**
-	 * Retrieves the relationship between node origin and destination of the request
+	 * Retrieves the CID of an item or node
 	 * 
 	 * @param OID of node or object originating the request
-	 * @return String (enum: Me, Friend, Other)
+	 * @return String CID
 	 */
-	public synchronized Representation getRelationship(String objectId) {
+	public synchronized Representation getCid(String objectId) {
 
-		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_SECURITY_RELATIONSHIP + objectId;
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_CID + objectId;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves all partners of my organisation
+	 * 
+	 * @return string[] cids
+	 */
+	public synchronized Representation getPartners() {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_PARTNERS;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves organisation info
+	 * 
+	 * @param CID ID of an AURORAL organisation
+	 * @return object { name: string, nodes: string[]}
+	 */
+	public synchronized Representation getPartnerInfo(String objectId) {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_PARTNER_INFO + objectId;
 
 		ClientResource clientResource = createRequest(endpointUrl);
 

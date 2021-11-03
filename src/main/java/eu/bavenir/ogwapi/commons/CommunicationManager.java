@@ -1478,12 +1478,12 @@ public class CommunicationManager {
 	}
 
 	/**
-	 * Security - Gets relationship between origin and destination node.
+	 * Discovery - Gets cid of a given item or node.
 	 * 
 	 * @param oid String ID of the node originating the request
-	 * @return Notification of success or failure.
+	 * @return CID
 	 */
-	public Representation getRelationship(String oid){
+	public Representation getCid(String oid){
 		if (oid == null) {
 			
 			logger.warning("Error when getting relationship. OID is null.");
@@ -1491,7 +1491,30 @@ public class CommunicationManager {
 			return null;
 		}
 		
-		return nmConnector.getRelationship(oid);
+		return nmConnector.getCid(oid);
+	}
+
+	/**
+	 * Discovery - Get partners
+	 * 
+	 * @return string[] cids
+	 */
+	public Representation getPartners(){
+		return nmConnector.getPartners();
+	}
+
+	/**
+	 * Discovery - Get partner info
+	 * 
+	 * @param cid String ID of the organisation
+	 * @return object { name: string, nodes: string[]}
+	 */
+	public Representation getPartnerInfo(String cid){
+		if (cid == null) {
+			logger.warning("Error when getting relationship. CID is null.");
+			return null;
+		}
+		return nmConnector.getPartnerInfo(cid);
 	}
 	
 	/**
