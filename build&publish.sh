@@ -44,7 +44,7 @@ docker buildx build --platform linux/amd64,linux/arm64 --build-arg UID=1001 --bu
 docker pull ${REGISTRY}/${IMAGE_NAME}:${ENV}
 
 # Build for ARMv7 & push to private registry
-docker buildx build --platform linux/arm/v7 --build-arg UID=1001 --build-arg GID=1001 --tag ${IMAGE_NAME}_armv7 -f Dockerfile.armv7 . --push
+docker buildx build --platform linux/arm/v7 --build-arg UID=1001 --build-arg GID=1001 --tag ${REGISTRY}/${IMAGE_NAME}:armv7 -f Dockerfile.armv7 . --push
 docker pull ${REGISTRY}/${IMAGE_NAME}:armv7
 
 # Push to GitHub

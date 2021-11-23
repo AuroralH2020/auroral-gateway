@@ -51,7 +51,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>3.2.4</version>
@@ -61,7 +61,7 @@
 			<groupId>org.mock-server</groupId>
 			<artifactId>mockserver-netty</artifactId>
 			<version>5.11.1</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- RESTLET -->
 		<dependency>
@@ -159,10 +159,18 @@
 		</dependency>
 
 		<!-- Andrea Cimmino's JClient -->
-		<dependency>
+		<!-- Includes Mashape unirest -->
+		<!-- <dependency>
 			<groupId>com.github.vicinityh2020</groupId>
 			<artifactId>vicinity-open-gateway-api-distributed-query-client</artifactId>
 			<version>76f9dac9d7ca86d3219feb7c634fa653023d9f1e</version>
+		</dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java -->
+		<dependency>
+			<groupId>com.mashape.unirest</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>1.4.9</version>
 		</dependency>
 
 	</dependencies>
@@ -223,11 +231,11 @@
 			</plugin>
 
 			<!-- Sonarqube Plugin -->
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.7.0.1746</version>
-			</plugin>
+			</plugin> -->
 
 			<!-- JACOCO Test reports & coverage-->
 			<!-- Plugin deprecated, look for alternative -->

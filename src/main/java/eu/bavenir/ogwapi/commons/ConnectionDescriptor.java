@@ -29,9 +29,6 @@ import eu.bavenir.ogwapi.commons.messages.NetworkMessageResponse;
 import eu.bavenir.ogwapi.commons.messages.StatusMessage;
 import eu.bavenir.ogwapi.commons.monitoring.MessageCounter;
 import eu.bavenir.ogwapi.commons.persistence.Data;
-import eu.bavenir.ogwapi.commons.search.SemanticQuery;
-import eu.bavenir.ogwapi.commons.search.SparqlQuery;
-
 
 /*
  * STRUCTURE:
@@ -89,16 +86,6 @@ public class ConnectionDescriptor {
 	 * Logger of the OGWAPI.
 	 */
 	private Logger logger;
-	
-	/**
-	 * Sparql query search engine.
-	 */
-	private SparqlQuery sparql;
-	
-	/**
-	 * Semantic query search engine.
-	 */
-	private SemanticQuery semantic;
 	
 	/**
 	 * Message resolver for incoming messages. 
@@ -174,11 +161,7 @@ public class ConnectionDescriptor {
 		this.messageCounter = messageCounter;
 		
 		this.commManager = commManager;
-		
-		this.sparql = new SparqlQuery(config, this, logger);
-		this.semantic = new SemanticQuery(config, logger);
 
-		
 		// TODO decide here what type of connector to use
 		agentConnector = new RestAgentConnector(config, logger);
 		
@@ -1102,50 +1085,6 @@ public class ConnectionDescriptor {
 			logger.warning(this.objectId + ": Invalid message received from the network.");
 		}
 		
-	}
-	
-	
-	/**
-	 * Performs a SPARQL search on all objects in the contact list.
-	 * 
-	 * @param query SPARQL query.
-	 * @param parameters Any parameters (if needed).
-	 * @return JSON with results. 
-	 */
-	public String performSparqlQuery(String query, Map<String, String> parameters) {
-		
-		if (query == null) {
-			
-			logger.warning(this.objectId + ": Can't execute null SPARQL query with parameters: \n" + parameters.toString());
-			
-			return null;
-		}
-		
-		logger.info(this.objectId + ": Executing SPARQL query: \n" + query + "\nwith parameters: \n" + parameters.toString());
-		
-		return sparql.performQuery(query, parameters);
-	}
-
-	
-	/**
-	 * Performs a Semantic search 
-	 * 
-	 * @param query Semantic query.
-	 * @param parameters Any parameters (if needed).
-	 * @return JSON with results. 
-	 */
-	public String performSemanticQuery(String sourceObjectId, String query, Map<String, String> parameters, JsonArray tds) {
-		
-		if (query == null) {
-			
-			logger.warning(this.objectId + ": Can't execute null Semantic query with parameters: \n" + parameters.toString());
-			
-			return null;
-		}
-		
-		logger.info(this.objectId + ": Executing Semantic query: \n" + query + "\nwith parameters: \n" + parameters.toString());
-		
-		return semantic.performQuery(sourceObjectId, query, parameters, tds);
 	}
 	
 	/* === PRIVATE METHODS === */

@@ -30,8 +30,6 @@ import eu.bavenir.ogwapi.restapi.services.SecurityPrivacy;
 import eu.bavenir.ogwapi.restapi.services.DiscoveryPartners;
 import eu.bavenir.ogwapi.restapi.services.DiscoveryPartnersCid;
 import eu.bavenir.ogwapi.restapi.services.ObjectsCid;
-import eu.bavenir.ogwapi.restapi.services.SearchSemantic;
-import eu.bavenir.ogwapi.restapi.services.SearchSparql;
 import eu.bavenir.ogwapi.commons.CommunicationManager;
 import eu.bavenir.ogwapi.commons.monitoring.MessageCounter;
 
@@ -171,7 +169,9 @@ public class Api extends Application {
 		
 		
 		// CONSUMPTION
+		// get
 		router.attach("/objects/{oid}/properties", ObjectsOidProperties.class);
+		// get, put
 		router.attach("/objects/{oid}/properties/{pid}", ObjectsOidPropertiesPid.class);
 		router.attach("/objects/{oid}/actions", ObjectsOidActions.class);
 		router.attach("/objects/{oid}/actions/{aid}", ObjectsOidActionsAid.class);
@@ -189,8 +189,8 @@ public class Api extends Application {
 		router.attach("/objects", Objects.class); // Get all objects agent can see (only OIDs)
 		// post
 		router.attach("/objects/{oid}", ObjectsOid.class); // Send remote req for thing desc (Use this for discovery) (Re-route to fetch td from agent)
-		// get
-		router.attach("/agents/{agid}/objects", AgentsAgidObjects.class); // Get all object under agent (OIDs and TDs)
+		// get, post
+		router.attach("/agents/{agid}/objects", AgentsAgidObjects.class); // Get all object under agent (OIDs and TDs) (!!! REMOVE IF REDUNDANT)
 		// get 
 		router.attach("/agents/cid/{reqid}", ObjectsCid.class); // Get organisation ID of a given infrastructure item (devices, service, node)
 		// get
@@ -210,12 +210,6 @@ public class Api extends Application {
 		// SECURITY
 		// get
 		router.attach("/security/privacy", SecurityPrivacy.class); // Get privacy of NODE objects
-
-		// SEARCH
-		// sparql query (VCNT)
-		router.attach("/search/sparql", SearchSparql.class);
-		// semantic query (SHQ)
-		router.attach("/search/semantic", SearchSemantic.class);
 		
 		// solve the question of API authentication
 		if (useAuthentication){

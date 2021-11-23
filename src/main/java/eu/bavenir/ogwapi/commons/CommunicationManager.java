@@ -1677,66 +1677,6 @@ public class CommunicationManager {
 		return json;
 	}
 	
-	// QUERY INTERFACE
-	
-	/**
-	 * Performs a SPARQL search on all objects in the contact list. The source object must be logged in first. 
-	 * 
-	 * @param sourceOid ID of the source object. 
-	 * @param query SPARQL query.
-	 * @param parameters Any parameters (if needed).
-	 * @return JSON with results. 
-	 */
-	public String performSparqlSearch(String sourceObjectId, String sparqlQuery, Map<String, String> parameters) {
-		
-		if (sourceObjectId == null || sourceObjectId.isEmpty() || sparqlQuery == null || sparqlQuery.isEmpty()) {
-			logger.warning("Method parameters can't be null nor empty.");
-			
-			return null;
-		}
-		
-		ConnectionDescriptor descriptor = descriptorPoolGet(sourceObjectId);
-		
-		if (descriptor == null){
-			logger.warning("Null record in the connection descriptor pool. Object ID: '" + sourceObjectId + "'.");
-			
-			return null;
-		} 
-		
-		return descriptor.performSparqlQuery(sparqlQuery, parameters);
-	}
-	
-	/**
-	 * Performs a Semantic search 
-	 * 
-	 * @param sourceOid ID of the source object. 
-	 * @param query Semantic query.
-	 * @param parameters Any parameters (if needed).
-	 * @return JSON with results. 
-	 */
-	public String performSemanticSearch(String sourceObjectId, String semanticQuery, Map<String, String> parameters) {
-		
-		if (sourceObjectId == null || sourceObjectId.isEmpty() || semanticQuery == null || semanticQuery.isEmpty()) {
-			logger.warning("Method parameters can't be null nor empty.");
-			
-			return null;
-		}
-		
-		ConnectionDescriptor descriptor = descriptorPoolGet(sourceObjectId);
-		
-		if (descriptor == null){
-			logger.warning("Null record in the connection descriptor pool. Object ID: '" + sourceObjectId + "'.");
-			
-			return null;
-		}
-		
-		Representation r = getThingDescriptions(sourceObjectId);
-		JsonArray tds = parseThingDescriptionsFromRepresentation(r);
-		
-		return descriptor.performSemanticQuery(sourceObjectId, semanticQuery, parameters, tds);
-	}
-	
-	
 	/* === METHODS AVAILABLE ONLY TO CLASSES FROM THIS PACKAGE === */
 	
 	/**
