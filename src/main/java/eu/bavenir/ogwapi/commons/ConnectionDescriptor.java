@@ -1196,6 +1196,13 @@ public class ConnectionDescriptor {
 				typeOfMessage = "GETTHINGDESCRIPTION";
 				response = respondToGetObjectThingDescription(requestMessage);
 				break;
+
+			case NetworkMessageRequest.OPERATION_SENDNOTIFICATION:
+				
+				logger.info(this.objectId + ": Request ID is " + requestMessage.getRequestId() + ", operation is SENDNOTIFICATION.");
+				typeOfMessage = "SENDNOTIFICATION";
+				response = respondToSendNotification(requestMessage);
+				break;
 			}
 		
 			
@@ -1428,6 +1435,29 @@ public class ConnectionDescriptor {
 		response.setError(false);
 		response.setResponseCode(CodesAndReasons.CODE_200_OK);
 		response.setResponseCodeReason(CodesAndReasons.REASON_200_OK + "Thing description retrieved.");
+		
+		// don't forget to set the correlation id so the other side can identify what 
+		// request does this response belong to
+		response.setRequestId(requestMessage.getRequestId());
+				
+		return response;
+		
+	}
+
+	/**
+	 * Responds to a request for sending notification. It creates a {@link eu.bavenir.ogwapi.commons.messages.NetworkMessageResponse
+	 * response} that is then sent back to the requesting object.
+	 * 
+	 * @param requestMessage A message that came from the network.
+	 * @return Response to be sent back.
+	 */
+	private NetworkMessageResponse respondToSendNotification(NetworkMessageRequest requestMessage) {
+		// call the agent connector
+		NetworkMessageResponse response = agentConnector.sendNotificationMessage(
+				requestMessage.getSourceOid(), 
+				requestMessage.getDestinationOid(), 
+				requestMessage.getAttributes().get(NetworkMessageRequest.ATTR_NOTIFICATION), 
+				requestMessage.getRequestBody(), requestMessage.getParameters());
 		
 		// don't forget to set the correlation id so the other side can identify what 
 		// request does this response belong to

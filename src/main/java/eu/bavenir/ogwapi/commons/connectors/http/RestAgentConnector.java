@@ -436,6 +436,22 @@ public class RestAgentConnector extends AgentConnector {
 		return performOperation(OPERATION_POST, sourceOid, fullEndpointUrl, body, parameters);
 	}
 
+	/**
+	 * This will make a call to POST http://<agent IP>:<agent port>/agent/objects/<destination AGID>/notification/<notification ID>
+	 */
+	@Override
+	public NetworkMessageResponse sendNotificationMessage(String sourceOid, String destinationAgid, String notificationId,
+		String body, Map<String, String> parameters) {
+
+		String fullEndpointUrl = new String(agentServiceUrl);
+
+		fullEndpointUrl =
+				fullEndpointUrl + ATTR_URL_OBJECTS + "/" + destinationAgid + "/notifications/" + notificationId;
+
+		return performOperation(OPERATION_POST, sourceOid, fullEndpointUrl, body, parameters);
+	}
+
+
 
 	/* === PRIVATE METHODS === */
 

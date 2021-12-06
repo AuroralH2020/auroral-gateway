@@ -85,6 +85,10 @@ public class NetworkMessageRequest extends NetworkMessage {
 	 */
 	private static final String ATTR_REQUESTBODY = "requestBody";
 	
+	/**
+	 * How the property ID is to be marked in the message.
+	 */
+	public static final String ATTR_NOTIFICATION = "nid";
 	
 	/**
 	 * How the property ID is to be marked in the message.
@@ -170,6 +174,11 @@ public class NetworkMessageRequest extends NetworkMessage {
 	 */
 	public static final byte OPERATION_GETTHINGDESCRIPTION = 0x0B;
 	
+	/**
+	 * Operation ID for sending a notification.
+	 */
+	public static final byte OPERATION_SENDNOTIFICATION = 0x0C;
+
 	// IMPORTANT NOTE: If adding new operation codes, add them also to the verification method at the end 
 	// of this class - in the private methods section. 
 	
@@ -442,25 +451,25 @@ public class NetworkMessageRequest extends NetworkMessage {
 			messageType = json.getInt(ATTR_MESSAGETYPE);
 			requestId = json.getInt(NetworkMessage.ATTR_REQUESTID);
 			requestOperation = (byte) json.getInt(ATTR_REQUESTOPERATION);
-			
+
 			// null values are special cases in JSON, they get transported as "null" string and it requires special
 			// treatment
 			if (!json.isNull(ATTR_SOURCEOID)) {
 				sourceOid = json.getString(ATTR_SOURCEOID);
 			}
-			
+
 			if (!json.isNull(ATTR_DESTINATIONOID)) {
 				destinationOid = json.getString(ATTR_DESTINATIONOID);
 			}
-			
+
 			if (!json.isNull(ATTR_ATTRIBUTES)) {
 				attributesJson = json.getJsonObject(ATTR_ATTRIBUTES);
 			}
-			
+
 			if (!json.isNull(ATTR_PARAMETERS)) {
 				parametersJson = json.getJsonObject(ATTR_PARAMETERS);
 			}
-			
+
 			if (!json.isNull(ATTR_REQUESTBODY)) {
 				requestBody = json.getString(ATTR_REQUESTBODY);
 			}
@@ -562,6 +571,7 @@ public class NetworkMessageRequest extends NetworkMessage {
 				|| requestOperation == NetworkMessageRequest.OPERATION_SUBSCRIBETOEVENTCHANNEL
 				|| requestOperation == NetworkMessageRequest.OPERATION_UNSUBSCRIBEFROMEVENTCHANNEL
 				|| requestOperation == NetworkMessageRequest.OPERATION_GETTHINGDESCRIPTION
+				|| requestOperation == NetworkMessageRequest.OPERATION_SENDNOTIFICATION
 				
 				)
 			){

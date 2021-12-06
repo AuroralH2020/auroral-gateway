@@ -123,9 +123,9 @@ public class MessageResolver {
 			
 			return new NetworkMessageEvent(json, config, logger);
 			
-			default:
+		default:
 				
-				return null;
+			return null;
 		}
 	}
 	
