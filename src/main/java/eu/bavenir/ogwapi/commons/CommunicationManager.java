@@ -1525,6 +1525,15 @@ public class CommunicationManager {
 	public Representation getPrivacy(){
 		return nmConnector.getPrivacy();
 	}
+
+	/**
+	 * Retrieves the contract info with a given company
+	 * 
+	 * @return Object { cid: String, ctid: String | null, items: Json[] }
+	 */
+	public Representation getContracts(String cid){
+		return nmConnector.getContracts(cid);
+	}
 	
 	/**
 	 * getThingDescriptions - Return one page of the thing descriptions of IoT object(s).

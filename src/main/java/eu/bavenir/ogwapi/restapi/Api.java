@@ -27,6 +27,7 @@ import eu.bavenir.ogwapi.restapi.services.ObjectsOidEventsEid;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidProperties;
 import eu.bavenir.ogwapi.restapi.services.ObjectsOidPropertiesPid;
 import eu.bavenir.ogwapi.restapi.services.SecurityPrivacy;
+import eu.bavenir.ogwapi.restapi.services.SecurityContracts;
 import eu.bavenir.ogwapi.restapi.services.DiscoveryPartners;
 import eu.bavenir.ogwapi.restapi.services.DiscoveryPartnersCid;
 import eu.bavenir.ogwapi.restapi.services.ObjectsCid;
@@ -210,7 +211,9 @@ public class Api extends Application {
 		// SECURITY
 		// get
 		router.attach("/security/privacy", SecurityPrivacy.class); // Get privacy of NODE objects
-		
+		// get
+		router.attach("/security/contracts/{cid}", SecurityContracts.class); // Get contract info with some organisation
+
 		// solve the question of API authentication
 		if (useAuthentication){
 			// create authenticator

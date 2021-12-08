@@ -275,15 +275,15 @@ public class SecureServerComms {
 	// Load DER file contents
 	private byte[] readFileBytes(String filename) throws IOException
 	{
-	    Path path = Paths.get(filename);
-	    return Files.readAllBytes(path);        
+	    Path filePath = Paths.get(filename);
+	    return Files.readAllBytes(filePath);        
 	}
 	
 	// Store token in file
 	private void storeToken(String token) throws IOException {
 		String file = path + CONFIG_DEF_TOKEN;
 		OutputStream os = new FileOutputStream(file);
-        os.write(token.toString().getBytes());
+        os.write(token.getBytes());
         os.close();
 	}
 	

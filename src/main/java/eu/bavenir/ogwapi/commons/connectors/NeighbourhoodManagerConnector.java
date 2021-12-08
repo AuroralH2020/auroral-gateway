@@ -142,11 +142,17 @@ public class NeighbourhoodManagerConnector {
 	private static final String TD_DISCOVERY_PARTNER_INFO = "agent/partner/";
 
 	/**
-	 * Privacy - Get privacy
+	 * Security - Get privacy
 	 */
 
 	private static final String TD_SECURITY_PRIVACY = "agent/privacy";
 
+	/**
+	 * Security - Get privacy
+	 */
+
+	private static final String TD_SECURITY_CONTRACTS = "agent/contract/items/";
+	
 	/**
 	 * Send counters
 	 */
@@ -490,6 +496,21 @@ public class NeighbourhoodManagerConnector {
 	public synchronized Representation getPrivacy() {
 
 		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_SECURITY_PRIVACY;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves the contract info with a given company
+	 * 
+	 * @return Object { cid: String, ctid: String | null, items: Json[] }
+	 */
+	public synchronized Representation getContracts(String cid) {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_SECURITY_CONTRACTS + cid;
 
 		ClientResource clientResource = createRequest(endpointUrl);
 
