@@ -1,7 +1,8 @@
 # Base image
-FROM openjdk:8-slim-buster
-# FROM maven:3.5.4-jdk-8-slim
+ARG ARCH
+FROM ${ARCH}eclipse-temurin:8-jre
 
+# Labels
 LABEL version="1.0"
 LABEL maintaner="jorge.almela@bavenir.eu"
 LABEL release-date="26-10-2021"
@@ -13,9 +14,6 @@ ARG GID=1001
 ENV UID=${UID}
 ENV GID=${GID}
 
-# # Install BUSTER packages
-# RUN apt-get update && apt-get install -y git
-
 # Create group and user that will run the gateway
 RUN groupadd -r --gid ${GID} app && useradd -r --uid ${UID} --gid ${GID} -s /sbin/nologin --home /gateway app
 
@@ -25,17 +23,13 @@ WORKDIR /gateway
 
 # Copy sources
 COPY --chown=app:app pom.xml /gateway/
-# COPY --chown=app:app src/** /gateway/src/
-COPY --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/target/
+COPY  --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/target/
 COPY --chown=app:app config/** /gateway/config/
 COPY --chown=app:app keystore/** /gateway/keystore/
 
 # Create directories
 RUN mkdir data \
     && mkdir log
-
-# # Build sources
-# RUN mvn -q clean package
 
 # Change rights and user
 RUN chmod 764 ./target/ogwapi-jar-with-dependencies.jar \
