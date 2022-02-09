@@ -1,11 +1,15 @@
-# Base image
 ARG ARCH
-FROM ${ARCH}eclipse-temurin:8-jre
+ARG BUILD_DATE
+ARG BUILD_VERSION
+ARG BASE_IMAGE=eclipse-temurin:11-jre
+
+# Base Image
+FROM $BASE_IMAGE AS build
 
 # Labels
 LABEL version="1.0"
 LABEL maintaner="jorge.almela@bavenir.eu"
-LABEL release-date="26-10-2021"
+LABEL release-date=$BUILD_DATE
 LABEL org.opencontainers.image.source https://github.com/AuroralH2020/auroral-gateway
 
 # Variables
@@ -23,7 +27,7 @@ WORKDIR /gateway
 
 # Copy sources
 COPY --chown=app:app pom.xml /gateway/
-COPY  --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/target/
+COPY --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/target/
 COPY --chown=app:app config/** /gateway/config/
 COPY --chown=app:app keystore/** /gateway/keystore/
 
@@ -32,11 +36,8 @@ RUN mkdir data \
     && mkdir log
 
 # Change rights and user
-RUN chmod 764 ./target/ogwapi-jar-with-dependencies.jar \
-    && chmod -R 777  ./log/ \
-    && chmod -R 777  ./data/ \
+RUN chmod +x ./config/fillAgid.sh \
     && chown -R app:app /gateway \
-    && chmod -R 764 ./config \
     && chmod +x ./keystore/genkeys.sh
 
 # Use non-root user    

@@ -23,6 +23,17 @@ Available for AMD64, ARM64 and ARM7 architectures.
 
 mvn clean package
 
+### Fix issues in raspberry pi ###
+
+Not imported certificates:
+
+* Prevent missing cert in keystore error in RaspberryPi *
+RUN echo | openssl s_client -showcerts -servername auroral.dev.bavenir.eu -connect auroral.dev.bavenir.eu:443 2>/dev/null | openssl x509 > keystore/cert.pem
+RUN openssl x509 -in keystore/cert.pem -out keystore/my-ca.der -outform DER 
+RUN keytool -import -trustcacerts -noprompt -alias local-CA -storepass changeit \
+    -keystore /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts \
+    -file keystore/my-ca.der
+
 ### Who do I talk to? ###
 
 Developed by bAvenir
