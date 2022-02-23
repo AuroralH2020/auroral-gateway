@@ -160,33 +160,55 @@ public class SecureServerComms {
 	// Checks if token exists in memory, in file or needs to be generated
 	// Afterwards returns token
 	public String getToken() {
-		File file = new File(path + CONFIG_DEF_TOKEN);
+		File tokenFile = new File(path + CONFIG_DEF_TOKEN);
 		String token = "";
 		if(platform_token_expiration < System.currentTimeMillis()) {
+			boolean result;
 			// If exists and it is expired, regenerate it
-			if(file.delete()) { 
+			result = removeToken();
+			if (result) {
 				logger.fine("Old token expired, removing and generating new one...");
 				token = generateToken();
-			    logger.fine("New token created and stored!");
-	        } else { 
-	            logger.severe("Old token expired but there was an error removing it, please delete it manually and restart the gateway"); 
-	            System.exit(1);
-	        } 
-			return token;
+				logger.fine("New token created and stored!");
+				return token;
+			} else {
+				logger.severe("Could not regenerate token... Shutting down...");
+				System.exit(1);
+				return token;
+			}
 		} else if(platform_token != null) {
 		// Check if exists in class
 		    logger.fine("Loading token from memory");
 			return platform_token;
-		} else if(file.exists()) { 
+		} else if(tokenFile.exists()) { 
 		// Check if in file
 		    logger.fine("Loading token from file");
-			return loadToken(file);
+			return loadToken(tokenFile);
 		} else {
 			// Otherwise regenerate
 			token = generateToken();
 			logger.fine("Token generated and stored");
 			return token;
 		}		
+	}
+
+	// Removes the token from the system
+	public boolean removeToken() {
+		try {
+			Path file = Paths.get(path + CONFIG_DEF_TOKEN);
+			Files.delete(file);
+			logger.info("The token was successfully removed!");
+			return true;
+		} catch (IOException ioe) {
+	    	logger.warning("Token could not be removed...");
+	    	ioe.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.warning(
+					"There was a problem while removing the token file...");
+			return false;
+		}
 	}
 	
 	// === PRIVATE METHODS ===

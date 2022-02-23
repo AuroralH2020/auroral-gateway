@@ -233,7 +233,7 @@ public class NeighbourhoodManagerConnector {
 	/**
 	 * Send authorization token.
 	 */
-	private Boolean securityEnabled;
+	private boolean securityEnabled;
 
 	// === PUBLIC METHODS ===
 
@@ -539,7 +539,15 @@ public class NeighbourhoodManagerConnector {
 			logger.warning(
 					"There might be a problem authenticating your signature, please check that you uploaded the right public key to the server.");
 		}
+	}
 
+	/**
+	 * Removes token when closing the app
+	 * 
+	 * @return void
+	 */
+	public synchronized void byebye() {
+		secureComms.removeToken();
 	}
 
 	// === PRIVATE METHODS ===

@@ -374,9 +374,7 @@ public class App {
 					messageCounter.saveCounters();
 
 					// Remove token file
-					path = config.getString(CONFIG_PARAM_PATH, CONFIG_DEF_PATH) + "ogwapi-token";
-					final File file = new File(path);
-					file.delete();
+					nmConnector.byebye();
 
 					// Pause waiting for AURORAL Agent to terminate item logouts
 					restletThread.pauseThread(10000);
