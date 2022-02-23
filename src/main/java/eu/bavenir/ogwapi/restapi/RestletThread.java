@@ -200,6 +200,18 @@ public class RestletThread extends Thread {
 	public void terminateThread(){
 		threadRunning = false;
 	}
+
+	/**
+	 * Sets timeout for the thread to pause execution.
+	 */
+	public void pauseThread(long time){
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 	/**

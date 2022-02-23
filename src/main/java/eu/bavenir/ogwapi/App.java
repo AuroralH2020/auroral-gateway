@@ -368,7 +368,7 @@ public class App {
 					// only system.out style logging can be executed at this phase
 					// (but there's nothing too much interesting anyway...)
 					System.out.println(
-							"Vicinity Gateway API: Shutdown hook run, terminating threads and storing counters.");
+							"AURORAL Gateway API: Shutdown hook run, terminating threads and storing counters.");
 
 					// Save counters
 					messageCounter.saveCounters();
@@ -377,6 +377,9 @@ public class App {
 					path = config.getString(CONFIG_PARAM_PATH, CONFIG_DEF_PATH) + "ogwapi-token";
 					final File file = new File(path);
 					file.delete();
+
+					// Pause waiting for AURORAL Agent to terminate item logouts
+					restletThread.pauseThread(10000);
 
 					// Terminate threads
 					restletThread.terminateThread();
