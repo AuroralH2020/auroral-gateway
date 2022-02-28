@@ -276,7 +276,7 @@ public class RestletThread extends Thread {
 				logger.info("RESTLET thread stopping.");
 				
 				// ...but this should execute without too much of a fuss				
-				System.out.println("Vicinity Gateway API: Stopping RESTLET component.");
+				System.out.println("AURORAL Gateway API: Stopping RESTLET component.");
 				
 			} catch (Exception e) {
 				logger.warning("RESTLET thread threw an exception while stopping:\n" + e.getMessage());

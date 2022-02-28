@@ -350,7 +350,7 @@ public class App {
 		}
 
 		// log message
-		logger.info("Vicinity Gateway API initialized.");
+		logger.info("AURORAL Gateway API initialized.");
 
 		// start threads
 		restletThread.start();
@@ -377,7 +377,7 @@ public class App {
 					nmConnector.byebye();
 
 					// Pause waiting for AURORAL Agent to terminate item logouts
-					restletThread.pauseThread(10000);
+					restletThread.pauseThread(5000);
 
 					// Terminate threads
 					restletThread.terminateThread();

@@ -23,17 +23,18 @@ RUN groupadd -r --gid ${GID} app && useradd -r --uid ${UID} --gid ${GID} -s /sbi
 
 # Create working directory
 RUN mkdir gateway
-WORKDIR /gateway
+RUN mkdir gateway/persistance
+WORKDIR /gateway/persistance
 
 # Copy sources
-COPY --chown=app:app pom.xml /gateway/
-COPY --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/target/
-COPY --chown=app:app config/** /gateway/config/
-COPY --chown=app:app keystore/** /gateway/keystore/
+COPY --chown=app:app target/ogwapi-jar-with-dependencies.jar /gateway/
+COPY --chown=app:app pom.xml /gateway/persistance/
+COPY --chown=app:app config/** /gateway/persistance/config/
+COPY --chown=app:app keystore/** /gateway/persistance/keystore/
 
 # Create directories
-RUN mkdir data \
-    && mkdir log
+RUN mkdir /gateway/persistance/data \
+    && mkdir /gateway/persistance/log
 
 # Change rights and user
 RUN chmod +x ./config/fillAgid.sh \
@@ -47,4 +48,4 @@ USER app
 EXPOSE  8181
 
 # Start the gateway-api in docker container
-CMD ["java", "-jar", "./target/ogwapi-jar-with-dependencies.jar"]
+CMD ["java", "-jar", "../ogwapi-jar-with-dependencies.jar"]
