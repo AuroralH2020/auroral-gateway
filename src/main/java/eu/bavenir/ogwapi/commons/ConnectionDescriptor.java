@@ -1,6 +1,7 @@
 package eu.bavenir.ogwapi.commons;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -9,12 +10,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.apache.commons.configuration2.XMLConfiguration;
+import org.json.JSONObject;
 
 import eu.bavenir.ogwapi.commons.connectors.AgentConnector;
 import eu.bavenir.ogwapi.commons.connectors.http.RestAgentConnector;
@@ -1348,7 +1349,7 @@ public class ConnectionDescriptor {
 	 */
 	private NetworkMessageResponse respondToGetObjectEvents(NetworkMessageRequest requestMessage) {
 		
-		JsonObject events = data.getEvents();
+		JSONObject events = data.getEvents();
 		
 		NetworkMessageResponse response = new NetworkMessageResponse(config, logger);
 		response.setResponseBody(events.toString());

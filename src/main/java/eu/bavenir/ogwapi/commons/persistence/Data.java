@@ -1,7 +1,9 @@
 package eu.bavenir.ogwapi.commons.persistence;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -10,8 +12,9 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 import org.apache.commons.configuration2.XMLConfiguration;
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.restlet.representation.Representation;
+import org.json.JSONObject;
 
 import eu.bavenir.ogwapi.commons.Action;
 import eu.bavenir.ogwapi.commons.EventChannel;
@@ -58,7 +61,7 @@ public class Data implements Serializable {
 	 * @Serialize
 	 */
 	private Set<EventChannel> providedEventChannels;
-	
+
 	/**
 	 * A set of channels that this object is subscribed to.
 	 * 
@@ -123,6 +126,7 @@ public class Data implements Serializable {
 			} else {
 				subscribedEventChannels = new HashSet<Subscription>();
 			}
+
 
 			providedActions = new HashSet<Action>();
 			
@@ -238,23 +242,25 @@ public class Data implements Serializable {
 	/**
 	 * Get events
 	 * 
-	 * @return all events from TD file in JsonObject format 
+	 * @return all events channels that are active
+	 * From persisted channels in gateway 
 	 */
-	public JsonObject getEvents() {
+	public JSONObject getEvents() {
 		
-		JsonObject events = null;
-		
-		if (thingDescription != null) {
-			try {
-				
-				JsonArray eventsArr = thingDescription.getJsonArray("events");
-				events = Json.createObjectBuilder().add("events", eventsArr).build();
-			
-			} catch (JSONException e) {
-				
-				logger.info("There are no events in TD for object: " + objectId);
+		JSONObject events = new JSONObject();
+
+		if (providedEventChannels != null) {
+			JSONArray eventsArr = new JSONArray();
+			for (EventChannel eventChannel : providedEventChannels) {
+				if (eventChannel.isActive()) {
+					eventsArr.put(eventChannel.getEventId());
+				}
 			}
-		} 
+			events.put("events", eventsArr);
+		} else {
+			events.put("events", new JSONArray());
+		}
+
 		return events;
 	}
 	
