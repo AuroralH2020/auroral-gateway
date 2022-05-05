@@ -136,11 +136,41 @@ public class NeighbourhoodManagerConnector {
 	private static final String TD_DISCOVERY_PARTNERS = "agent/partners";
 
 	/**
+	 * Discovery - Get partners
+	 */
+
+	private static final String TD_DISCOVERY_COMMUNITIES = "agent/communities";
+	
+	/**
 	 * Discovery - Get partner info
 	 */
 
 	private static final String TD_DISCOVERY_PARTNER_INFO = "agent/partner/";
 
+	/**
+	 * Discovery - Get organisation nodes
+	 */
+
+	private static final String TD_DISCOVERY_ORGANISATION_NODES = "discovery/nodes/organisation";
+
+	/**
+	 * Discovery - Get community nodes
+	 */
+
+	private static final String TD_DISCOVERY_COMMUNITY_NODES = "discovery/nodes/community";
+
+	/**
+	 * Discovery - Get organisation items
+	 */
+
+	private static final String TD_DISCOVERY_ORGANISATION_ITEMS = "discovery/items/organisation";
+
+	/**
+	 * Discovery - Get contract items
+	 */
+
+	private static final String TD_DISCOVERY_CONTRACT_ITEMS = "discovery/items/contract";
+	
 	/**
 	 * Security - Get privacy
 	 */
@@ -382,15 +412,6 @@ public class NeighbourhoodManagerConnector {
 		Representation responseRepresentation = clientResource.post(json, MediaType.APPLICATION_JSON);
 
 		return responseRepresentation;
-
-		/*
-		 * String ret;
-		 * 
-		 * try { ret = representation.getText(); } catch (IOException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); ret = null; }
-		 * 
-		 * return ret;
-		 */
 	}
 
 	/**
@@ -473,6 +494,21 @@ public class NeighbourhoodManagerConnector {
 	}
 
 	/**
+	 * Retrieves all communities where my node participates
+	 * 
+	 * @return list[{id: string, name: string, description: string}]
+	 */
+	public synchronized Representation getCommunities() {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_COMMUNITIES;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
 	 * Retrieves organisation info
 	 * 
 	 * @param CID ID of an AURORAL organisation
@@ -488,6 +524,84 @@ public class NeighbourhoodManagerConnector {
 
 	}
 
+	/**
+	 * Retrieves all my organisation nodes
+	 * 
+	 * @return list[{id: string, name: string, description: string}]
+	 */
+	public synchronized Representation getOrganisationNodes() {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_ORGANISATION_NODES;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves friend organisation visible nodes
+	 * 
+	 * @param CID ID of an AURORAL organisation
+	 * @return list[{id: string, name: string, description: string}]
+	 */
+	public synchronized Representation getOrganisationNodesCid(String objectId) {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_ORGANISATION_NODES + '/' + objectId;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+	
+	/**
+	 * Retrieves friend organisation visible nodes
+	 * 
+	 * @param COMMID ID of an AURORAL community
+	 * @return list[{id: string, name: string, description: string}]
+	 */
+	public synchronized Representation getCommunityNodes(String objectId) {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_COMMUNITY_NODES + '/' + objectId;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves organisation items
+	 * 
+	 * @return string[]
+	 */
+	public synchronized Representation getOrganisationItems() {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_ORGANISATION_ITEMS;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+
+	/**
+	 * Retrieves contract items
+	 * 
+	 * @param CTID ID of an AURORAL contract
+	 * @return string[]
+	 */
+	public synchronized Representation getContractItems(String objectId) {
+
+		String endpointUrl = server_protocol + neighbourhoodManagerServer + ":" + port + api_base_uri + TD_DISCOVERY_CONTRACT_ITEMS + '/' + objectId;
+
+		ClientResource clientResource = createRequest(endpointUrl);
+
+		return clientResource.get(MediaType.APPLICATION_JSON);
+
+	}
+	
 	/**
 	 * Retrieves the privacy of all node items
 	 * 

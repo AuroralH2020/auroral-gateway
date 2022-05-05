@@ -31,6 +31,12 @@ import eu.bavenir.ogwapi.restapi.services.SecurityContracts;
 import eu.bavenir.ogwapi.restapi.services.DiscoveryPartners;
 import eu.bavenir.ogwapi.restapi.services.DiscoveryPartnersCid;
 import eu.bavenir.ogwapi.restapi.services.ObjectsCid;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryCommunities;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryOrganisationNodes;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryOrganisationNodesCid;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryCommunityNodesCommid;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryOrganisationItems;
+import eu.bavenir.ogwapi.restapi.services.DiscoveryContractItemsCtid;
 import eu.bavenir.ogwapi.commons.CommunicationManager;
 import eu.bavenir.ogwapi.commons.monitoring.MessageCounter;
 
@@ -198,6 +204,18 @@ public class Api extends Application {
 		router.attach("/agents/partners", DiscoveryPartners.class); // Get all my organisation partners
 		// get
 		router.attach("/agents/partner/{cid}", DiscoveryPartnersCid.class); // Get information about a partner organisation
+		// get
+		router.attach("/agents/communities", DiscoveryCommunities.class); // Get communities where my node participates
+		// get
+		router.attach("/discovery/nodes/organisation", DiscoveryOrganisationNodes.class); // Get all nodes in my organisaition
+		// get
+		router.attach("/discovery/nodes/organisation/{cid}", DiscoveryOrganisationNodesCid.class); // Get all nodes I can see from other partner organisation
+		// get
+		router.attach("/discovery/nodes/community/{commid}", DiscoveryCommunityNodesCommid.class); // Get all nodes in a community
+		// get
+		router.attach("/discovery/items/organisation", DiscoveryOrganisationItems.class); // Get all my organisation items
+		// get
+		router.attach("/discovery/items/contract/{ctid}", DiscoveryContractItemsCtid.class); // Get all items in a contract
 
 
 		// REGISTRY

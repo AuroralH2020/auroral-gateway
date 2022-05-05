@@ -10,7 +10,7 @@ PLATFORMS=linux/amd64,linux/arm64,linux/arm/v7
 VERSION=0
 LATEST=0 # If 1 build image with latest tag
 # Maven using docker / local --> Default local
-MAVEN_DOCKER=0
+MAVEN_DOCKER=1
 
 # Default configuration
 ENV=dev
@@ -61,7 +61,7 @@ if [ $MAVEN_DOCKER == 1 ]; then
         -v maven-repo:/root/.m2 \
         -v "$(pwd)":/opt/maven \
         -w /opt/maven \
-        maven:3.5.4-jdk-8-slim \
+        maven:3.5.4-jdk-11-slim \
         mvn clean package
 else
     mvn clean package

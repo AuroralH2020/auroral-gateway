@@ -1504,6 +1504,15 @@ public class CommunicationManager {
 	}
 
 	/**
+	 * Discovery - Get communities
+	 * 
+	 * @return list[{id: string, name: string, description: string}]
+	 */
+	public Representation getCommunities(){
+		return nmConnector.getCommunities();
+	}
+
+	/**
 	 * Discovery - Get partner info
 	 * 
 	 * @param cid String ID of the organisation
@@ -1528,13 +1537,58 @@ public class CommunicationManager {
 
 	/**
 	 * Retrieves the contract info with a given company
-	 * 
+	 * @param cid String ID of the organisation
 	 * @return Object { cid: String, ctid: String | null, items: Json[] }
 	 */
 	public Representation getContracts(String cid){
 		return nmConnector.getContracts(cid);
 	}
-	
+
+	/**
+	 * Discovery - Get my organisation nodes
+	 * 
+	 * @return list[{agid: string, cid: string, company: string}]
+	 */
+	public Representation getOrganisationNodes(){
+		return nmConnector.getOrganisationNodes();
+	}
+
+	/**
+	 * Discovery - Get friend organisation visible nodes
+	 * @param cid String ID of the organisation
+	 * @return list[{agid: string, cid: string, company: string}]
+	 */
+	public Representation getOrganisationNodesCid(String cid){
+		return nmConnector.getOrganisationNodesCid(cid);
+	}
+
+	/**
+	 * Discovery - Get community nodes
+	 * @param commid String ID of the community
+	 * @return list[{agid: string, cid: string, company: string}]
+	 */
+	public Representation getCommunityNodes(String commid){
+		return nmConnector.getCommunityNodes(commid);
+	}
+
+	/**
+	 * Discovery - Get organisation items
+	 * 
+	 * @return string[]
+	 */
+	public Representation getOrganisationItems(){
+		return nmConnector.getOrganisationItems();
+	}
+
+	/**
+	 * Discovery - Get contract items
+	 * @param ctid String ID of the contract
+	 * @return string[]
+	 */
+	public Representation getContractItems(String ctid){
+		return nmConnector.getContractItems(ctid);
+	}
+
 	/**
 	 * getThingDescriptions - Return one page of the thing descriptions of IoT object(s).
 	 * 
